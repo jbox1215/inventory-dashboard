@@ -155,11 +155,10 @@ tr.ordered .td-group{text-decoration:line-through;color:var(--muted)}
   <button class="fbtn"    id="fb-all"     onclick="setFilter('all')">전체</button>
   <input class="search-box" type="text" id="q" placeholder="제품명 또는 옵션 검색..." oninput="onSearch()">
   <select class="sort-sel" id="ss" onchange="onSort()">
+    <option value="group-asc">제품명 가나다순</option>
     <option value="days_left-asc">잔여일 ↑ (위급순)</option>
     <option value="days_left-desc">잔여일 ↓</option>
-    <option value="order_qty-desc">발주량 ↓</option>
     <option value="monthly_avg-desc">월평균출고 ↓</option>
-    <option value="group-asc">제품명 가나다순</option>
   </select>
 </div>
 
