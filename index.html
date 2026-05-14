@@ -127,7 +127,7 @@ tr.ordered .td-group{text-decoration:line-through;color:var(--muted)}
     <button class="btn btn-danger" onclick="clearAll()">발주완료 초기화</button>
     <button class="btn" onclick="syncFromSheet()">🔄 새로고침</button>
     <button class="btn" onclick="window.print()">🖨 인쇄/PDF</button>
-    <button class="btn" onclick="logout()">🔒 잠금</button>
+    <button class="btn" onclick="logout()">🔒 로그아웃</button>
   </div>
 </div>
 
@@ -219,7 +219,6 @@ let cf = 'need', pg = 0;
 function checkPw() {
   const val = document.getElementById('pw-input').value;
   if (val === CORRECT_PW) {
-    localStorage.setItem(LS_AUTH, '1');
     document.getElementById('pw-screen').style.display = 'none';
     document.getElementById('main-page').style.display = 'block';
     init();
@@ -231,8 +230,6 @@ function checkPw() {
   }
 }
 function logout() {
-  if (!confirm('잠금할까요?')) return;
-  localStorage.removeItem(LS_AUTH);
   location.reload();
 }
 
@@ -243,11 +240,7 @@ window.addEventListener('DOMContentLoaded', () => {
     SCRIPT_URL = setupUrl;
     localStorage.setItem(LS_URL, setupUrl);
   }
-  if (localStorage.getItem(LS_AUTH) === '1') {
-    document.getElementById('pw-screen').style.display = 'none';
-    document.getElementById('main-page').style.display = 'block';
-    init();
-  }
+
 });
 
 function init() {
