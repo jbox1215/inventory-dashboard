@@ -141,7 +141,21 @@ new_html = re.sub(
     new_html
 )
 
+# 캐시 무력화 버전 번호 자동 삽입 (타임스탬프 기반)
+import time
+version = str(int(time.time()))
+new_html = re.sub(
+    r'<meta http-equiv="Expires" content="0">',
+    f'<meta http-equiv="Expires" content="0">\n<meta name="version" content="{version}">',
+    new_html
+)
+# 공유 URL의 ?setup= 뒤에도 버전 자동 추가되도록 스크립트 패치
+new_html = new_html.replace(
+    "const params = new URLSearchParams(location.search);",
+    f"const BUILD = '{version}';\nconst params = new URLSearchParams(location.search);"
+)
+
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(new_html)
 
-print("index.html 업데이트 완료!")
+print(f"index.html 업데이트 완료! (버전: {version})")
