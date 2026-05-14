@@ -15,7 +15,6 @@
 }
 body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
 
-/* 비밀번호 화면 */
 .pw-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
 .pw-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem 2rem;width:320px;text-align:center}
 .pw-box h2{font-size:18px;font-weight:600;margin-bottom:6px}
@@ -58,7 +57,6 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
 .fbtn.ad{background:var(--red-bg);color:var(--red-tx);border-color:#f7c1c1;font-weight:500}
 .fbtn.aw{background:var(--amber-bg);color:var(--amber-tx);border-color:#fac775;font-weight:500}
 .fbtn.ak{background:var(--green-bg);color:var(--green-tx);border-color:#c0dd97;font-weight:500}
-.fbtn.ao{background:#ededf5;color:#5a5a8a;border-color:#c5c5dd;font-weight:500}
 .fbtn.aa{background:#f1efe8;color:#5f5e5a;border-color:#d3d1c7;font-weight:500}
 .search-box{flex:1;min-width:180px;max-width:280px;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);font-size:13px;outline:none;background:var(--surface)}
 .search-box:focus{border-color:#aaa}
@@ -73,12 +71,9 @@ th.r{text-align:right}
 td{padding:9px 12px;border-bottom:1px solid #f0ede8;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#faf9f7}
-
-/* 발주완료 행 - 같은 자리에서 회색처리만 */
-tr.ordered td{opacity:.3;pointer-events:none}
-tr.ordered td:first-child{pointer-events:auto}
+tr.ordered td{opacity:.3}
+tr.ordered td:first-child{opacity:1}
 tr.ordered .td-group{text-decoration:line-through;color:var(--muted)}
-
 .td-group{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .td-opt{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .td-r{text-align:right;font-variant-numeric:tabular-nums}
@@ -156,7 +151,6 @@ tr.ordered .td-group{text-decoration:line-through;color:var(--muted)}
   <button class="fbtn ad" id="fb-danger"  onclick="setFilter('danger')">🔴 즉시 발주</button>
   <button class="fbtn"    id="fb-warning" onclick="setFilter('warning')">🟡 발주 필요</button>
   <button class="fbtn"    id="fb-ok"      onclick="setFilter('ok')">🟢 정상</button>
-  <button class="fbtn"    id="fb-ordered" onclick="setFilter('ordered')">✅ 발주완료만 보기</button>
   <button class="fbtn"    id="fb-all"     onclick="setFilter('all')">전체</button>
   <input class="search-box" type="text" id="q" placeholder="제품명 또는 옵션 검색..." oninput="onSearch()">
   <select class="sort-sel" id="ss" onchange="onSort()">
@@ -212,7 +206,6 @@ let SCRIPT_URL = localStorage.getItem(LS_URL) || '';
 let ordered    = {};
 let cf = 'danger', pg = 0;
 
-// ── 비밀번호 ─────────────────────────────────────────
 function checkPw() {
   const val = document.getElementById('pw-input').value;
   if (val === CORRECT_PW) {
@@ -233,7 +226,6 @@ function logout() {
   location.reload();
 }
 
-// ── 초기화 ───────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const params   = new URLSearchParams(location.search);
   const setupUrl = params.get('setup');
@@ -256,7 +248,6 @@ function init() {
   document.getElementById('username').value = localStorage.getItem(LS_USER) || '';
   syncFromSheet();
 }
-
 function saveScriptUrl() {
   const val = document.getElementById('script-url-input').value.trim();
   if (!val.startsWith('https://script.google.com')) { alert('올바른 Apps Script URL을 입력해주세요.'); return; }
@@ -269,7 +260,6 @@ function saveUsername() {
   localStorage.setItem(LS_USER, document.getElementById('username').value.trim());
 }
 
-// ── Sheets API ───────────────────────────────────────
 function apiCall(params) {
   if (!SCRIPT_URL) return Promise.resolve(null);
   return fetch(SCRIPT_URL + '?' + new URLSearchParams(params).toString())
@@ -293,7 +283,6 @@ function setStatus(msg, cls) {
   el.textContent = msg; el.className = 'sync-status ' + cls;
 }
 
-// ── 체크/해제 ────────────────────────────────────────
 function itemKey(r) { return (r.group + '||' + r.option).replace(/\s+/g, ' '); }
 
 function toggleOrdered(key, checked) {
@@ -315,11 +304,10 @@ function clearAll() {
   updateCounts(); render();
 }
 
-// ── 필터 / 정렬 ──────────────────────────────────────
 function setFilter(f) {
   cf = f; pg = 0;
-  const cls = { danger:'ad', warning:'aw', ok:'ak', ordered:'ao', all:'aa' };
-  ['danger','warning','ok','ordered','all'].forEach(k => {
+  const cls = { danger:'ad', warning:'aw', ok:'ak', all:'aa' };
+  ['danger','warning','ok','all'].forEach(k => {
     const b = document.getElementById('fb-' + k);
     if (b) b.className = 'fbtn' + (k === f ? ' ' + cls[k] : '');
   });
@@ -332,10 +320,9 @@ function filtered() {
   const q = (document.getElementById('q').value || '').toLowerCase();
   return D.items.filter(r => {
     const isOrd = !!ordered[itemKey(r)];
-    // 발주완료만 보기 탭
-    if (cf === 'ordered') return isOrd && (!q || r.group.toLowerCase().includes(q) || r.option.toLowerCase().includes(q));
-    // 나머지 탭: 발주완료 포함해서 모두 표시 (회색처리만)
+    // 필터 탭: 발주완료 항목도 해당 탭에 그대로 포함
     if (cf !== 'all' && !isOrd && r.status !== cf) return false;
+    if (cf !== 'all' && isOrd && r.status !== cf) return false;
     if (q && !r.group.toLowerCase().includes(q) && !r.option.toLowerCase().includes(q)) return false;
     return true;
   });
@@ -344,9 +331,6 @@ function filtered() {
 function getSorted(items) {
   const [k, d] = document.getElementById('ss').value.split('-');
   return [...items].sort((a, b) => {
-    // 발주완료 항목은 항상 맨 아래로
-    const ao = ordered[itemKey(a)] ? 1 : 0, bo = ordered[itemKey(b)] ? 1 : 0;
-    if (ao !== bo) return ao - bo;
     let av = a[k], bv = b[k];
     if (k === 'group') return d === 'asc' ? av.localeCompare(bv,'ko') : bv.localeCompare(av,'ko');
     return d === 'asc' ? av - bv : bv - av;
@@ -355,9 +339,9 @@ function getSorted(items) {
 
 function updateCounts() {
   const od      = Object.keys(ordered).length;
-  const danger  = D.items.filter(r => !ordered[itemKey(r)] && r.status === 'danger').length;
-  const warning = D.items.filter(r => !ordered[itemKey(r)] && r.status === 'warning').length;
-  const ok      = D.items.filter(r => !ordered[itemKey(r)] && r.status === 'ok').length;
+  const danger  = D.items.filter(r => r.status === 'danger').length;
+  const warning = D.items.filter(r => r.status === 'warning').length;
+  const ok      = D.items.filter(r => r.status === 'ok').length;
   document.getElementById('cnt-d').textContent = danger;
   document.getElementById('cnt-w').textContent = warning;
   document.getElementById('cnt-k').textContent = ok;
@@ -365,14 +349,13 @@ function updateCounts() {
   document.getElementById('fb-danger').textContent  = '🔴 즉시 발주 ' + danger;
   document.getElementById('fb-warning').textContent = '🟡 발주 필요 ' + warning;
   document.getElementById('fb-ok').textContent      = '🟢 정상 ' + ok;
-  document.getElementById('fb-ordered').textContent = '✅ 발주완료만 보기 ' + od;
   document.getElementById('fb-all').textContent     = '전체 ' + D.items.length;
 }
 
 function render() {
   const fi = filtered(), si = getSorted(fi), total = si.length;
   const slice = si.slice(pg * PER, (pg + 1) * PER);
-  const maxD  = Math.max(...slice.filter(r => !ordered[itemKey(r)] && r.days_left > 0 && r.days_left < 5000).map(r => r.days_left), 1);
+  const maxD  = Math.max(...slice.filter(r => r.days_left > 0 && r.days_left < 5000).map(r => r.days_left), 1);
   const tb = document.getElementById('tb');
   if (!slice.length) {
     tb.innerHTML = '<tr><td colspan="9" class="empty">해당 항목이 없습니다</td></tr>';
@@ -383,7 +366,7 @@ function render() {
       const ordInfo = ordered[key] || {};
       const dl  = r.days_left;
       const ds  = dl < 0 ? '∞' : dl === 0 ? '품절' : dl + '일';
-      const pct = isOrd ? 0 : dl <= 0 ? 0 : dl >= 5000 ? 100 : Math.min(100, Math.round(dl / maxD * 100));
+      const pct = dl <= 0 ? 0 : dl >= 5000 ? 100 : Math.min(100, Math.round(dl / maxD * 100));
       const bc  = 'bar-' + (r.status === 'danger' ? 'd' : r.status === 'warning' ? 'w' : 'k');
       const pc  = isOrd ? 'po' : ('p' + (r.status === 'danger' ? 'd' : r.status === 'warning' ? 'w' : 'k'));
       const lbl = isOrd ? '발주완료' : r.status === 'danger' ? '즉시 발주' : r.status === 'warning' ? '발주 필요' : '정상';
