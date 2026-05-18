@@ -135,9 +135,9 @@ new_html = re.sub(
     new_html
 )
 
-# 파일명 업데이트
+# 파일명 업데이트 (공백/언더스코어 모두 매칭)
 new_html = re.sub(
-    r'소스: .*?\.xlsx',
+    r'소스: [^<]*?\.xlsx',
     f'소스: {xlsx_path}',
     new_html
 )
