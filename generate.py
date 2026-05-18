@@ -135,10 +135,14 @@ new_html = re.sub(
     new_html
 )
 
-# 파일명 + 날짜 플레이스홀더 교체
+# 파일명 + 날짜 + 버전 플레이스홀더 교체
+import time
+build_version = str(int(time.time()))
 new_html = new_html.replace('__XLSX_FILENAME__', xlsx_path)
 new_html = new_html.replace('__DATE__', today.strftime('%Y-%m-%d'))
+new_html = new_html.replace('__BUILD_VERSION__', build_version)
 print(f"소스 파일명 교체 완료: {xlsx_path}")
+print(f"빌드 버전: {build_version}")
 
 # 캐시 무력화 버전 번호 자동 삽입 (타임스탬프 기반)
 import time
