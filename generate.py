@@ -162,8 +162,15 @@ with open('index.html', 'w', encoding='utf-8') as f:
 print(f"index.html 업데이트 완료! (버전: {version})")
 
 # ── 이전 엑셀 파일 삭제 (최신 파일만 유지) ──────────
-old_files = [f for f in glob.glob("*.xlsx") if f != xlsx_path]
+all_xlsx = glob.glob("*.xlsx") + glob.glob("*.XLSX")
+old_files = [f for f in all_xlsx if os.path.abspath(f) != os.path.abspath(xlsx_path)]
 for f in old_files:
-    os.remove(f)
-    print(f"이전 파일 삭제: {f}")
-print(f"저장소 정리 완료 (유지: {xlsx_path})")
+    try:
+        os.remove(f)
+        print(f"이전 파일 삭제: {f}")
+    except Exception as e:
+        print(f"삭제 실패: {f} ({e})")
+if old_files:
+    print(f"저장소 정리 완료 (유지: {xlsx_path}, 삭제: {len(old_files)}개)")
+else:
+    print(f"삭제할 파일 없음 (유지: {xlsx_path})")
