@@ -68,14 +68,14 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
 .search-box:focus{border-color:#aaa}
 .sort-sel{font-size:12px;padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text)}
 
-.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;overflow-x:auto}
+.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
 col.c-chk{width:44px}col.c-group{width:18%}col.c-opt{width:15%}
 col.c-stk{width:8%}col.c-avg{width:8%}col.c-day{width:8%}
 col.c-ord{width:8%}col.c-dl{width:11%}col.c-st{width:14%}
 th{text-align:left;padding:9px 12px;font-weight:600;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:#f1efe8;border-bottom:1px solid var(--border);white-space:nowrap}
 th.r{text-align:right}
-td{padding:9px 12px;border-bottom:1px solid #f0ede8;vertical-align:middle}
+td{padding:9px 10px;border-bottom:1px solid #f0ede8;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#faf9f7}
 tr.ordered td{opacity:.3}
@@ -174,7 +174,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 <colgroup>
   <col class="c-chk"><col class="c-group"><col class="c-opt">
   <col class="c-stk"><col class="c-avg"><col class="c-day">
-  <col class="c-ord"><col class="c-dl"><col class="c-st"><col style="width:130px">
+  <col class="c-ord"><col class="c-dl"><col class="c-st"><col style="width:110px">
 </colgroup>
 <thead><tr>
   <th style="text-align:center">발주</th>
@@ -238,7 +238,15 @@ function logout() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  const BUILD = '0';
   const params   = new URLSearchParams(location.search);
+  // 버전 체크 - 빌드 버전이 다르면 강제 새로고침
+  const urlV = params.get('v');
+  if (urlV && urlV !== BUILD) {
+    const newUrl = location.href.replace(/[?&]v=[^&]*/,'').replace(/[?&]$/,'');
+    const sep = newUrl.includes('?') ? '&' : '?';
+    location.replace(newUrl + sep + 'v=' + BUILD);
+  }
   const setupUrl = params.get('setup');
   if (setupUrl && setupUrl.startsWith('https://script.google.com')) {
     SCRIPT_URL = setupUrl;
