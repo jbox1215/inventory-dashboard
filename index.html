@@ -5,6 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+<meta name="build-version" content="__BUILD_VERSION__">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>재고 발주 현황</title>
 <style>
@@ -79,9 +80,9 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
 /* 테이블 */
 .tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
-th{text-align:left;padding:9px 10px;font-weight:600;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:#f1efe8;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+th{text-align:left;padding:9px 12px;font-weight:600;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:#f1efe8;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 th.r{text-align:right}
-td{padding:8px 10px;border-bottom:1px solid #f0ede8;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid #f0ede8;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#faf9f7}
 tr.ordered td{opacity:.3}
@@ -195,13 +196,13 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 <thead><tr>
   <th style="text-align:center">발주</th>
   <th>제품명</th><th>옵션</th>
-  <th class="r">현재고</th>
-  <th class="r">월평균출고</th>
-  <th class="r">잔여일</th>
-  <th class="r">발주권장량</th>
-  <th>발주마감일</th>
+  <th style="text-align:right">현재고</th>
+  <th style="text-align:right">월평균출고</th>
+  <th style="text-align:right">잔여일</th>
+  <th style="text-align:right">발주권장량</th>
+  <th style="text-align:right">발주마감일</th>
   <th style="text-align:center">상태</th>
-  <th>요청입고일</th>
+  <th style="text-align:right">요청입고일</th>
 </tr></thead>
 <tbody id="tb"></tbody>
 </table>
@@ -255,6 +256,21 @@ function checkPw() {
 function logout() { location.reload(); }
 
 // ── 초기화 ───────────────────────────────────────────
+// 버전 체크 - 캐시된 버전이면 강제 새로고침
+(function() {
+  const meta = document.querySelector('meta[name="build-version"]');
+  const currentV = meta ? meta.content : '0';
+  const storedV = sessionStorage.getItem('build-version');
+  if (storedV && storedV !== currentV && currentV !== '__BUILD_VERSION__') {
+    sessionStorage.setItem('build-version', currentV);
+    location.reload(true);
+    return;
+  }
+  if (currentV !== '__BUILD_VERSION__') {
+    sessionStorage.setItem('build-version', currentV);
+  }
+})();
+
 window.addEventListener('DOMContentLoaded', () => {
   const params   = new URLSearchParams(location.search);
   const setupUrl = params.get('setup');
@@ -421,9 +437,9 @@ ${optCell}
 <td class="td-r">${r.monthly_avg.toLocaleString()}</td>
 <td class="td-r">${ds}<div class="bar-wrap"><div class="bar-fill ${bc}" style="width:${pct}%"></div></div></td>
 <td class="td-r">${r.order_qty.toLocaleString()}</td>
-<td class="${dlc}" style="font-size:12px">${r.deadline_str}</td>
+<td class="${dlc}" style="font-size:12px;text-align:right">${r.deadline_str}</td>
 <td style="text-align:center"><span class="pill ${pc}">${lbl}</span></td>
-<td class="reqdate-cell">
+<td class="reqdate-cell" style="text-align:right">
   <input type="date" class="date-input"
     value="${ordInfo.reqdate || ''}"
     onchange="saveReqDate('${safeKey}', this.value)">
