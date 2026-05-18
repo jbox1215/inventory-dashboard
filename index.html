@@ -93,7 +93,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 .td-group{font-weight:700;font-size:13px}
 .td-opt{font-size:12px;color:var(--muted)}
 .td-r{text-align:right;font-variant-numeric:tabular-nums;padding:9px 8px}
-.bar-wrap{height:3px;border-radius:99px;background:#eee;overflow:hidden;margin-top:2px}
+.bar-wrap{height:3px;border-radius:99px;background:#eee;overflow:hidden;margin-top:2px;max-width:60px}
 .bar-fill{height:100%;border-radius:99px}
 .bar-need{background:#E24B4A}.bar-k{background:#3B6D11}
 .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
@@ -200,7 +200,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
   <th style="text-align:right">월평균출고</th>
   <th style="text-align:right">잔여일</th>
   <th style="text-align:right">발주권장량</th>
-  <th style="text-align:right">발주마감일</th>
+  <th style="text-align:center">발주마감일</th>
   <th style="text-align:center">상태</th>
   <th style="text-align:center">요청입고일</th>
 </tr></thead>
@@ -437,7 +437,7 @@ ${optCell}
 <td class="td-r">${r.monthly_avg.toLocaleString()}</td>
 <td class="td-r">${ds}<div class="bar-wrap"><div class="bar-fill ${bc}" style="width:${pct}%"></div></div></td>
 <td class="td-r">${r.order_qty.toLocaleString()}</td>
-<td class="${dlc}" style="font-size:12px;text-align:right">${r.deadline_str}</td>
+<td class="${dlc}" style="font-size:12px;text-align:center">${r.deadline_str}</td>
 <td style="text-align:center"><span class="pill ${pc}">${lbl}</span></td>
 <td class="reqdate-cell" style="text-align:center">
   <input type="date" class="date-input"
