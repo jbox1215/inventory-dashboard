@@ -95,7 +95,8 @@ tr.ordered .td-group{text-decoration:line-through;color:var(--muted)}
 .chk{width:16px;height:16px;cursor:pointer;accent-color:#5a5a8a}
 .date-input{font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);width:120px;cursor:pointer}
 .date-input:focus{outline:none;border-color:#aaa}
-tr.ordered .date-input{opacity:0.5}
+tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
+.reqdate-cell{opacity:1!important}
 .pg{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
 .pg-info{font-size:12px;color:var(--muted)}
 .pg-btn{font-size:12px;padding:4px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);cursor:pointer}
@@ -405,7 +406,7 @@ ${optCell}
 <td class="td-r">${r.order_qty.toLocaleString()}</td>
 <td class="${dlc}" style="font-size:12px">${r.deadline_str}</td>
 <td><span class="pill ${pc}">${lbl}</span></td>
-<td>
+<td class="reqdate-cell">
   <input type="date" class="date-input"
     value="${ordInfo.reqdate||''}"
     onchange="saveReqDate('${safeKey}', this.value)"
