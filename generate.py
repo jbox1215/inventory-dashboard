@@ -2,12 +2,13 @@ import openpyxl
 from datetime import date, timedelta
 import json, os, re, glob
 
-# ── 엑셀 파일 찾기 ───────────────────────────────────
+# ── 엑셀 파일 찾기 (최신 파일 자동 선택) ───────────
 xlsx_files = glob.glob("*.xlsx")
 if not xlsx_files:
     raise FileNotFoundError("xlsx 파일을 찾을 수 없습니다.")
-xlsx_path = xlsx_files[0]
-print(f"파일 읽는 중: {xlsx_path}")
+# 수정시간 기준 가장 최신 파일 선택
+xlsx_path = max(xlsx_files, key=os.path.getmtime)
+print(f"파일 읽는 중: {xlsx_path} (총 {len(xlsx_files)}개 중 최신)")
 
 # ── 시트 찾기 (가장 최신 연도 or '2025') ────────────
 wb = openpyxl.load_workbook(xlsx_path, read_only=False, data_only=True)
@@ -159,3 +160,10 @@ with open('index.html', 'w', encoding='utf-8') as f:
     f.write(new_html)
 
 print(f"index.html 업데이트 완료! (버전: {version})")
+
+# ── 이전 엑셀 파일 삭제 (최신 파일만 유지) ──────────
+old_files = [f for f in glob.glob("*.xlsx") if f != xlsx_path]
+for f in old_files:
+    os.remove(f)
+    print(f"이전 파일 삭제: {f}")
+print(f"저장소 정리 완료 (유지: {xlsx_path})")
