@@ -80,20 +80,20 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
 /* 테이블 */
 .tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
-th{text-align:left;padding:9px 12px;font-weight:600;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:#f1efe8;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+th{text-align:left;padding:9px 10px;font-weight:600;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:#f1efe8;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 th.r{text-align:right}
-td{padding:8px 12px;border-bottom:1px solid #f0ede8;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid #f0ede8;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#faf9f7}
 tr.ordered td{opacity:.3}
 tr.ordered td:first-child{opacity:1}
 tr.ordered .reqdate-cell{opacity:1!important}
-.reqdate-cell{padding-right:10px!important}
+.reqdate-cell{padding:9px 10px!important}
 tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 .td-group{font-weight:700;font-size:13px}
 .td-opt{font-size:12px;color:var(--muted)}
-.td-r{text-align:right;font-variant-numeric:tabular-nums}
-.bar-wrap{height:3px;border-radius:99px;background:#eee;overflow:hidden;margin-top:4px}
+.td-r{text-align:right;font-variant-numeric:tabular-nums;padding:9px 8px}
+.bar-wrap{height:3px;border-radius:99px;background:#eee;overflow:hidden;margin-top:2px}
 .bar-fill{height:100%;border-radius:99px}
 .bar-need{background:#E24B4A}.bar-k{background:#3B6D11}
 .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
@@ -182,16 +182,16 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 <div class="tbl-wrap">
 <table>
 <colgroup>
-  <col style="width:36px">
-  <col style="width:20%">
-  <col style="width:13%">
+  <col style="width:32px">
+  <col style="width:19%">
+  <col style="width:11%">
+  <col style="width:9%">
+  <col style="width:9%">
+  <col style="width:9%">
+  <col style="width:9%">
+  <col style="width:9%">
   <col style="width:7%">
-  <col style="width:8%">
-  <col style="width:7%">
-  <col style="width:8%">
-  <col style="width:10%">
-  <col style="width:7%">
-  <col style="width:96px">
+  <col style="width:9%">
 </colgroup>
 <thead><tr>
   <th style="text-align:center">발주</th>
@@ -202,7 +202,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
   <th style="text-align:right">발주권장량</th>
   <th style="text-align:right">발주마감일</th>
   <th style="text-align:center">상태</th>
-  <th style="text-align:right">요청입고일</th>
+  <th style="text-align:center">요청입고일</th>
 </tr></thead>
 <tbody id="tb"></tbody>
 </table>
@@ -439,7 +439,7 @@ ${optCell}
 <td class="td-r">${r.order_qty.toLocaleString()}</td>
 <td class="${dlc}" style="font-size:12px;text-align:right">${r.deadline_str}</td>
 <td style="text-align:center"><span class="pill ${pc}">${lbl}</span></td>
-<td class="reqdate-cell" style="text-align:right">
+<td class="reqdate-cell" style="text-align:center">
   <input type="date" class="date-input"
     value="${ordInfo.reqdate || ''}"
     onchange="saveReqDate('${safeKey}', this.value)">
