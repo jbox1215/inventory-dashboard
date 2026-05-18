@@ -87,6 +87,7 @@ tr:hover td{background:#faf9f7}
 tr.ordered td{opacity:.3}
 tr.ordered td:first-child{opacity:1}
 tr.ordered .reqdate-cell{opacity:1!important}
+.reqdate-cell{padding-right:10px!important}
 tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 .td-group{font-weight:700;font-size:13px}
 .td-opt{font-size:12px;color:var(--muted)}
@@ -133,7 +134,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
 <div class="header">
   <div>
     <h1>재고 발주 현황</h1>
-    <p>기준일: <strong>2026-05-14</strong> &nbsp;·&nbsp; 최근 3개월 출고 기반 &nbsp;·&nbsp; 발주 리드타임: 45일 &nbsp;·&nbsp; 소스: 5월_14일.xlsx</p>
+    <p>기준일: <strong>__DATE__</strong> &nbsp;·&nbsp; 최근 3개월 출고 기반 &nbsp;·&nbsp; 발주 리드타임: 45일 &nbsp;·&nbsp; 소스: __XLSX_FILENAME__</p>
   </div>
   <div class="hbtns">
     <button class="btn btn-danger" onclick="clearAll()">발주완료 초기화</button>
@@ -189,7 +190,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
   <col style="width:8%">
   <col style="width:10%">
   <col style="width:7%">
-  <col style="width:100px">
+  <col style="width:96px">
 </colgroup>
 <thead><tr>
   <th style="text-align:center">발주</th>
@@ -199,7 +200,7 @@ tr.ordered .date-input{opacity:1!important;color:var(--text)!important}
   <th class="r">잔여일</th>
   <th class="r">발주권장량</th>
   <th>발주마감일</th>
-  <th>상태</th>
+  <th style="text-align:center">상태</th>
   <th>요청입고일</th>
 </tr></thead>
 <tbody id="tb"></tbody>
@@ -421,7 +422,7 @@ ${optCell}
 <td class="td-r">${ds}<div class="bar-wrap"><div class="bar-fill ${bc}" style="width:${pct}%"></div></div></td>
 <td class="td-r">${r.order_qty.toLocaleString()}</td>
 <td class="${dlc}" style="font-size:12px">${r.deadline_str}</td>
-<td><span class="pill ${pc}">${lbl}</span></td>
+<td style="text-align:center"><span class="pill ${pc}">${lbl}</span></td>
 <td class="reqdate-cell">
   <input type="date" class="date-input"
     value="${ordInfo.reqdate || ''}"
