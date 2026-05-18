@@ -135,8 +135,9 @@ new_html = re.sub(
     new_html
 )
 
-# 파일명 업데이트 - 플레이스홀더 방식
+# 파일명 + 날짜 플레이스홀더 교체
 new_html = new_html.replace('__XLSX_FILENAME__', xlsx_path)
+new_html = new_html.replace('__DATE__', today.strftime('%Y-%m-%d'))
 print(f"소스 파일명 교체 완료: {xlsx_path}")
 
 # 캐시 무력화 버전 번호 자동 삽입 (타임스탬프 기반)
