@@ -238,15 +238,7 @@ function logout() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const BUILD = '0';
   const params   = new URLSearchParams(location.search);
-  // 버전 체크 - 빌드 버전이 다르면 강제 새로고침
-  const urlV = params.get('v');
-  if (urlV && urlV !== BUILD) {
-    const newUrl = location.href.replace(/[?&]v=[^&]*/,'').replace(/[?&]$/,'');
-    const sep = newUrl.includes('?') ? '&' : '?';
-    location.replace(newUrl + sep + 'v=' + BUILD);
-  }
   const setupUrl = params.get('setup');
   if (setupUrl && setupUrl.startsWith('https://script.google.com')) {
     SCRIPT_URL = setupUrl;
