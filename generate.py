@@ -135,12 +135,15 @@ new_html = re.sub(
     new_html
 )
 
-# 파일명 업데이트 (공백/언더스코어 모두 매칭)
-new_html = re.sub(
-    r'소스: [^<]*?\.xlsx',
-    f'소스: {xlsx_path}',
-    new_html
-)
+# 파일명 업데이트 - split 방식으로 확실하게 교체
+if '소스: ' in new_html:
+    parts = new_html.split('소스: ')
+    # 두 번째 부분에서 .xlsx 이후까지 교체
+    after = parts[1]
+    xlsx_end = after.find('.xlsx') + len('.xlsx')
+    parts[1] = xlsx_path + after[xlsx_end:]
+    new_html = '소스: '.join(parts)
+    print(f"소스 파일명 교체 완료: {xlsx_path}")
 
 # 캐시 무력화 버전 번호 자동 삽입 (타임스탬프 기반)
 import time
