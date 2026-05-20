@@ -138,7 +138,7 @@ new_html = re.sub(
 # 파일명 + 날짜 + 버전 플레이스홀더 교체
 import time
 build_version = str(int(time.time()))
-new_html = new_html.replace('__XLSX_FILENAME__', xlsx_path)
+new_html = re.sub(r'소스: [^<]+\.xlsx', f'소스: {xlsx_path}', new_html)
 new_html = new_html.replace('__DATE__', today.strftime('%Y-%m-%d'))
 new_html = new_html.replace('__BUILD_VERSION__', build_version)
 print(f"소스 파일명 교체 완료: {xlsx_path}")
