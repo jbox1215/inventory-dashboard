@@ -321,6 +321,15 @@ function syncFromSheet() {
   apiCall({ action: 'getAll' }).then(res => {
     if (res && res.ok) {
       ordered = res.data || {};
+// reqdate 날짜 형식 변환
+Object.keys(ordered).forEach(key => {
+  if (ordered[key].reqdate) {
+    const d = new Date(ordered[key].reqdate);
+    if (!isNaN(d)) {
+      ordered[key].reqdate = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+  }
+});
       setStatus('✓ 동기화 완료', 'sync-ok');
     } else {
       setStatus('연결 실패', 'sync-err');
