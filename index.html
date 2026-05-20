@@ -351,9 +351,14 @@ function toggleOrdered(key, checked) {
 
 function saveReqDate(key, dateVal) {
   const user = document.getElementById('username').value.trim() || '익명';
+  let formattedDate = dateVal;
+  if (dateVal && !dateVal.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const d = new Date(dateVal);
+    formattedDate = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
   if (!ordered[key]) ordered[key] = { date: new Date().toLocaleDateString('ko-KR'), user };
-  ordered[key].reqdate = dateVal;
-  apiCall({ action: 'setReqDate', key, reqdate: dateVal, user });
+  ordered[key].reqdate = formattedDate;
+  apiCall({ action: 'setReqDate', key, reqdate: formattedDate, user });
 }
 
 function clearAll() {
