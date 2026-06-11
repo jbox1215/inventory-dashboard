@@ -16,16 +16,16 @@ jobs:
  
     steps:
       - name: 저장소 체크아웃
-  uses: actions/checkout@v4
-  with:
-    fetch-depth: 0
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-- name: 파일 수정시간 복원
-  run: |
-    git ls-files | while read f; do
-      t=$(git log -1 --format="%ct" -- "$f")
-      touch -t $(date -d "@$t" +%Y%m%d%H%M.%S) "$f"
-    done
+      - name: 파일 수정시간 복원
+        run: |
+          git ls-files | while read f; do
+            t=$(git log -1 --format="%ct" -- "$f")
+            touch -t $(date -d "@$t" +%Y%m%d%H%M.%S) "$f"
+          done
  
       - name: Python 설정
         uses: actions/setup-python@v5
