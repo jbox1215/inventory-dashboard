@@ -24,7 +24,7 @@ jobs:
         run: |
           git ls-files | while read f; do
             t=$(git log -1 --format="%ct" -- "$f")
-            touch -d "@$t" "$f"
+            if [ -n "$t" ]; then touch -d "@$t" "$f"; fi
           done
  
       - name: Python 설정
