@@ -24,7 +24,7 @@ jobs:
         run: |
           git ls-files | while read f; do
             t=$(git log -1 --format="%ct" -- "$f")
-            touch -t $(date -d "@$t" +%Y%m%d%H%M.%S) "$f"
+            touch -d "@$t" "$f"
           done
  
       - name: Python 설정
