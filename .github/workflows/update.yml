@@ -22,6 +22,7 @@ jobs:
 
       - name: 파일 수정시간 복원
         run: |
+          git config core.quotepath false
           git ls-files | while read f; do
             t=$(git log -1 --format="%ct" -- "$f")
             if [ -n "$t" ]; then touch -d "@$t" "$f"; fi
